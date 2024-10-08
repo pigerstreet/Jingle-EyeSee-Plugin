@@ -1,4 +1,4 @@
-# EyeSee
+# Jingle EyeSee Plugin
 
 A plugin that provides a built-in eye measuring projector.
 
