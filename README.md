@@ -1,15 +1,6 @@
-# Jingle Example Plugin
+# EyeSee
 
-An example project to act as a template in making Jingle Plugins.
-
-Things you should probably change:
-- Java package name
-- Jingle dependency in build.gradle (could be a newer version available)
-- gradle.properties
-  - archives_base_name and maven_group
-- src/resources/jingle.plugin.json
-  - name, id, initializer
-- All the default initialized stuff and the GUI
+A plugin that provides a built-in eye measuring projector.
 
 ## Developing
 

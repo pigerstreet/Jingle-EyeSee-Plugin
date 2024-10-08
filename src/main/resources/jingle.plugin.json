@@ -1,6 +1,6 @@
 {
-  "name": "Jingle Example Plugin",
-  "id": "jingle-example-plugin",
+  "name": "EyeSee",
+  "id": "eyesee",
   "version": "${version}",
-  "initializer": "xyz.duncanruns.jingle.exampleplugin.ExamplePlugin::initialize"
+  "initializer": "xyz.duncanruns.jingle.eyesee.EyeSee::initialize"
 }
