@@ -108,7 +108,7 @@
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="&lt;html&gt; &lt;h2&gt;Warning&lt;/h2&gt; The EyeSee plugin provides a measuring projector that works wihout the use of OBS.&lt;br&gt; It's possible this projector will fail to work for any of the following reasons: &lt;ul&gt; &lt;li&gt;Usage of an AMD GPU&lt;/li&gt; &lt;li&gt;Being on a Laptop&lt;/li&gt; &lt;li&gt;Certain hardware configurations&lt;/li&gt; &lt;li&gt;Not being blessed by the Jingle God&lt;/li&gt; &lt;/ul&gt; If you can't get the EyeSee projector to work, try using an OBS projector (check out the OBS tab). &lt;/html&gt;"/>
+          <text value="&lt;html&gt; &lt;h2&gt;Warning&lt;/h2&gt; The EyeSee plugin provides a measuring projector that works without the use of OBS.&lt;br&gt; It's possible this projector will fail to work for any of the following reasons: &lt;ul&gt; &lt;li&gt;Usage of an AMD GPU&lt;/li&gt; &lt;li&gt;Being on a Laptop&lt;/li&gt; &lt;li&gt;Certain hardware configurations&lt;/li&gt; &lt;li&gt;Not being blessed by the Jingle God&lt;/li&gt; &lt;/ul&gt; If you can't get the EyeSee projector to work, try using an OBS projector (check out the OBS tab). &lt;/html&gt;"/>
         </properties>
       </component>
       <component id="59027" class="javax.swing.JSeparator">
