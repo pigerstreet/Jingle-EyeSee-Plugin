@@ -43,7 +43,7 @@ public class EyeSeeFrame extends JFrame {
             }
         });
         this.setResizable(false);
-        this.setTitle("Julti EyeSee");
+        this.setTitle("Jingle EyeSee");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setAlwaysOnTop(true);
         this.overlay.setAlwaysOnTop(true);
