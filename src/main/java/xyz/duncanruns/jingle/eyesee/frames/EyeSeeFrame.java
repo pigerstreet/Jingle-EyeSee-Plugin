@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @author DuncanRuns, draconix6
  */
 public class EyeSeeFrame extends JFrame {
+    private static final int SHOW_FLAGS = User32.SWP_NOACTIVATE | User32.SWP_NOSENDCHANGING;
     private static final WinDef.DWORD SRCCOPY = new WinDef.DWORD(0x00CC0020);
     private final OverlayFrame overlay = new OverlayFrame();
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -97,7 +98,7 @@ public class EyeSeeFrame extends JFrame {
                 rect.y,
                 rect.width,
                 rect.height,
-                0x0400
+                SHOW_FLAGS
         );
 
         // add overlay image & resize accordingly
@@ -124,7 +125,7 @@ public class EyeSeeFrame extends JFrame {
                 rect.y,
                 rect.width,
                 rect.height,
-                0x0400
+                SHOW_FLAGS
         );
 //        this.overlay.setSize(projectorWidth, projectorHeight);
 //        this.overlay.setLocation(projectorXPos, projectorYPos);
