@@ -25,6 +25,10 @@ public class EyeSee {
         return options;
     }
 
+    public static EyeSeeFrame getEyeSeeFrame() {
+        return eyeSeeFrame;
+    }
+
     public static void main(String[] args) throws IOException {
         JingleAppLaunch.launchWithDevPlugin(args, PluginManager.JinglePluginData.fromString(
                 Resources.toString(Resources.getResource(EyeSee.class, "/jingle.plugin.json"), Charset.defaultCharset())
@@ -32,7 +36,6 @@ public class EyeSee {
     }
 
     public static void initialize() {
-        eyeSeeFrame = new EyeSeeFrame();
         Optional<EyeSeeOptions> loadedOptions = EyeSeeOptions.load();
         if (loadedOptions.isPresent()) {
             options = loadedOptions.get();
@@ -40,6 +43,8 @@ public class EyeSee {
             options = new EyeSeeOptions();
             Jingle.log(Level.ERROR, "Failed to load EyeSeeOptions, using defaults.");
         }
+
+        eyeSeeFrame = new EyeSeeFrame();
 
         JingleGUI.addPluginTab("EyeSee", new EyeSeePluginPanel().mainPanel);
 

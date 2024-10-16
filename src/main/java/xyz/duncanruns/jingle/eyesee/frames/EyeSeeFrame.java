@@ -5,6 +5,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
 import org.apache.logging.log4j.Level;
 import xyz.duncanruns.jingle.Jingle;
+import xyz.duncanruns.jingle.eyesee.EyeSee;
 import xyz.duncanruns.jingle.eyesee.win32.GDI32Extra;
 import xyz.duncanruns.jingle.util.WindowStateUtil;
 import xyz.duncanruns.jingle.win32.User32;
@@ -17,6 +18,7 @@ import java.awt.geom.AffineTransform;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,6 +29,7 @@ public class EyeSeeFrame extends JFrame {
     private static final WinDef.DWORD SRCCOPY = new WinDef.DWORD(0x00CC0020);
     private final OverlayFrame overlay = new OverlayFrame();
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledFuture<?> redrawTask;
 
     private final WinDef.HWND eyeSeeHwnd;
     private boolean currentlyShowing = false;
@@ -55,9 +58,7 @@ public class EyeSeeFrame extends JFrame {
         WindowStateUtil.setHwndBorderless(eyeSeeHwnd);
 
         tick();
-        // 30 = refresh rate
-        // TODO: adjustable?
-        this.executor.scheduleAtFixedRate(this::tick, 50_000_000, 1_000_000_000L / 30, TimeUnit.NANOSECONDS);
+        restartDrawingTask(EyeSee.getOptions().fpsLimit);
         this.setVisible(false);
 
 //        this.showEyeSee();
@@ -86,7 +87,9 @@ public class EyeSeeFrame extends JFrame {
         Jingle.log(Level.DEBUG, "Showing EyeSee...");
 
         currentlyShowing = true;
+        this.setFocusableWindowState(false);
         this.setVisible(true);
+        this.overlay.setFocusableWindowState(false);
         this.overlay.setVisible(true);
         bounds = rect;
 
@@ -151,6 +154,18 @@ public class EyeSeeFrame extends JFrame {
 
 //        this.overlay.setSize(1, 1);
 //        this.overlay.setLocation(0, -monitor.height);
+    }
+
+    /**
+     * Stops an ongoing drawing task and starts a new one with the specified FPS limit.
+     */
+    public void restartDrawingTask(int fpsLimit) {
+        if (redrawTask != null) {
+            redrawTask.cancel(false);
+        }
+
+        long delay = 1_000_000_000L / fpsLimit;
+        redrawTask = this.executor.scheduleAtFixedRate(this::tick, delay, delay, TimeUnit.NANOSECONDS);
     }
 
     @Override

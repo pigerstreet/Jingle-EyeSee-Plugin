@@ -19,6 +19,7 @@ public class EyeSeeOptions {
     public int y;
     public int w;
     public int h;
+    public int fpsLimit = 30;
 
     public static Optional<EyeSeeOptions> load() {
         if (!Files.exists(OPTIONS_PATH)) return Optional.of(new EyeSeeOptions());
