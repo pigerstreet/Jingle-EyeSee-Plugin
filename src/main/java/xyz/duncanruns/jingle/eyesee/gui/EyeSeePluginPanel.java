@@ -34,15 +34,15 @@ public class EyeSeePluginPanel {
             Rectangle projectorRect = EyeSee.getProjectorRect();
             options.autoPos = autoBox.isSelected();
             if (options.autoPos) {
-                projPosXField.setText("");
-                projPosYField.setText("");
-                projPosWField.setText("");
-                projPosHField.setText("");
+                projPosXField.setText(null);
+                projPosYField.setText(null);
+                projPosWField.setText(null);
+                projPosHField.setText(null);
             } else {
-                projPosXField.setText("" + projectorRect.x);
-                projPosYField.setText("" + projectorRect.y);
-                projPosWField.setText("" + projectorRect.width);
-                projPosHField.setText("" + projectorRect.height);
+                projPosXField.setText(String.valueOf(projectorRect.x));
+                projPosYField.setText(String.valueOf(projectorRect.y));
+                projPosWField.setText(String.valueOf(projectorRect.width));
+                projPosHField.setText(String.valueOf(projectorRect.height));
                 options.x = projectorRect.x;
                 options.y = projectorRect.y;
                 options.w = projectorRect.width;
@@ -54,25 +54,29 @@ public class EyeSeePluginPanel {
 
         if (!options.autoPos) {
             Rectangle projectorRect = EyeSee.getProjectorRect();
-            projPosXField.setText("" + projectorRect.x);
-            projPosYField.setText("" + projectorRect.y);
-            projPosWField.setText("" + projectorRect.width);
-            projPosHField.setText("" + projectorRect.height);
+            projPosXField.setText(String.valueOf(projectorRect.x));
+            projPosYField.setText(String.valueOf(projectorRect.y));
+            projPosWField.setText(String.valueOf(projectorRect.width));
+            projPosHField.setText(String.valueOf(projectorRect.height));
         }
 
         applyButton.addActionListener(a -> {
             int x = getIntFromField(projPosXField);
             options.x = x;
-            projPosXField.setText("" + x);
+            projPosXField.setText(String.valueOf(x));
+
             int y = getIntFromField(projPosYField);
             options.y = y;
-            projPosYField.setText("" + y);
+            projPosYField.setText(String.valueOf(y));
+
             int w = getIntFromField(projPosWField);
             options.w = w;
-            projPosWField.setText("" + w);
+            projPosWField.setText(String.valueOf(w));
+
             int h = getIntFromField(projPosHField);
             options.h = h;
             projPosHField.setText("" + h);
+            projPosHField.setText(String.valueOf(h));
         });
 
         reloadEnabledComponents();
