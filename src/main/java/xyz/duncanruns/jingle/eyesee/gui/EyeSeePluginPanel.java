@@ -22,6 +22,7 @@ public class EyeSeePluginPanel {
     private JTextField projPosHField;
     private JButton applyButton;
     private JPanel customizationPanel;
+    private JTextField projFpsLimitField;
 
     public EyeSeePluginPanel() {
         EyeSeeOptions options = EyeSee.getOptions();
@@ -60,6 +61,8 @@ public class EyeSeePluginPanel {
             projPosHField.setText(String.valueOf(projectorRect.height));
         }
 
+        projFpsLimitField.setText(String.valueOf(options.fpsLimit));
+
         applyButton.addActionListener(a -> {
             int x = getIntFromField(projPosXField);
             options.x = x;
@@ -75,8 +78,14 @@ public class EyeSeePluginPanel {
 
             int h = getIntFromField(projPosHField);
             options.h = h;
-            projPosHField.setText("" + h);
             projPosHField.setText(String.valueOf(h));
+
+            int fps = clamp(getIntFromField(projFpsLimitField), 5, 240); // prevent small/huge fps values
+            options.fpsLimit = fps;
+            projFpsLimitField.setText(String.valueOf(fps));
+
+            // Restart the drawing task with updated FPS limit.
+            EyeSee.getEyeSeeFrame().restartDrawingTask(fps);
         });
 
         reloadEnabledComponents();
@@ -99,6 +108,10 @@ public class EyeSeePluginPanel {
             component.setEnabled(options.enabled && !options.autoPos);
         }
         autoBox.setEnabled(options.enabled);
+    }
+
+    private static int clamp(int i, int min, int max) {
+        return Math.max(min, Math.min(max, i));
     }
 
     {
@@ -126,7 +139,7 @@ public class EyeSeePluginPanel {
         autoBox.setText("Automatically Position EyeSee Measuring Projector");
         mainPanel.add(autoBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         customizationPanel = new JPanel();
-        customizationPanel.setLayout(new GridLayoutManager(2, 4, new Insets(0, 0, 0, 0), -1, -1));
+        customizationPanel.setLayout(new GridLayoutManager(3, 4, new Insets(0, 0, 0, 0), -1, -1));
         mainPanel.add(customizationPanel, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         customizationPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label1 = new JLabel();
@@ -149,12 +162,18 @@ public class EyeSeePluginPanel {
         customizationPanel.add(projPosHField, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(30, -1), null, 0, false));
         applyButton = new JButton();
         applyButton.setText("Apply");
-        customizationPanel.add(applyButton, new GridConstraints(0, 3, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        customizationPanel.add(applyButton, new GridConstraints(0, 3, 3, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label3 = new JLabel();
+        label3.setText("FPS Limit:");
+        customizationPanel.add(label3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        projFpsLimitField = new JTextField();
+        projFpsLimitField.setText("");
+        customizationPanel.add(projFpsLimitField, new GridConstraints(2, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(60, -1), null, 0, false));
         final Spacer spacer1 = new Spacer();
         mainPanel.add(spacer1, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final JLabel label3 = new JLabel();
-        label3.setText("<html> <h2>Warning</h2> The EyeSee plugin provides a measuring projector that works without the use of OBS.<br> It's possible this projector will fail to work for any of the following reasons: <ul> <li>Usage of an AMD GPU</li> <li>Being on a Laptop</li> <li>Certain hardware configurations</li> <li>Not being blessed by the Jingle God</li> </ul> If you can't get the EyeSee projector to work, try using an OBS projector (check out the OBS tab). </html>");
-        mainPanel.add(label3, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label4 = new JLabel();
+        label4.setText("<html> <h2>Warning</h2> The EyeSee plugin provides a measuring projector that works without the use of OBS.<br> It's possible this projector will fail to work for any of the following reasons: <ul> <li>Usage of an AMD GPU</li> <li>Being on a Laptop</li> <li>Certain hardware configurations</li> <li>Not being blessed by the Jingle God</li> </ul> If you can't get the EyeSee projector to work, try using an OBS projector (check out the OBS tab). </html>");
+        mainPanel.add(label4, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JSeparator separator1 = new JSeparator();
         mainPanel.add(separator1, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
     }
