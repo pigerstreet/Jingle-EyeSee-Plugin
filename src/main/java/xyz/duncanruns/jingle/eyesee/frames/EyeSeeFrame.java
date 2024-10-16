@@ -86,7 +86,9 @@ public class EyeSeeFrame extends JFrame {
         Jingle.log(Level.DEBUG, "Showing EyeSee...");
 
         currentlyShowing = true;
+        this.setFocusableWindowState(false);
         this.setVisible(true);
+        this.overlay.setFocusableWindowState(false);
         this.overlay.setVisible(true);
         bounds = rect;
 
