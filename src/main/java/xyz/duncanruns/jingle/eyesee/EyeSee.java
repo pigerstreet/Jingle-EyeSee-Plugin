@@ -46,7 +46,8 @@ public class EyeSee {
 
         eyeSeeFrame = new EyeSeeFrame();
 
-        JingleGUI.addPluginTab("EyeSee", new EyeSeePluginPanel().mainPanel);
+        EyeSeePluginPanel gui = new EyeSeePluginPanel();
+        JingleGUI.addPluginTab("EyeSee", gui.mainPanel, gui::onSwitchTo);
 
         PluginEvents.SHOW_PROJECTOR.register(EyeSee::showProjector);
         PluginEvents.DUMP_PROJECTOR.register(EyeSee::dumpProjector);

@@ -15,7 +15,6 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.Arrays;
-import java.util.function.IntSupplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -90,15 +89,15 @@ public class EyeSeePluginPanel {
             projPosHField.setText(String.valueOf(h));
         });
 
-        Arrays.<Pair<JTextField, IntSupplier>>asList(
-                Pair.of(projPosXField, () -> options.x),
-                Pair.of(projPosYField, () -> options.y),
-                Pair.of(projPosWField, () -> options.w),
-                Pair.of(projPosHField, () -> options.h)
-        ).forEach(p -> p.getLeft().addFocusListener(new FocusAdapter() {
+        Arrays.asList(
+                projPosXField,
+                projPosYField,
+                projPosWField,
+                projPosHField
+        ).forEach(field -> field.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                p.getLeft().setText(String.valueOf(p.getRight().getAsInt()));
+                field.setText(String.valueOf(getIntFromField(field, 0)));
             }
         }));
 
@@ -246,4 +245,13 @@ public class EyeSeePluginPanel {
         return mainPanel;
     }
 
+    public void onSwitchTo() {
+        EyeSeeOptions options = EyeSee.getOptions();
+        Arrays.asList(
+                Pair.of(projPosXField, options.x),
+                Pair.of(projPosYField, options.y),
+                Pair.of(projPosWField, options.w),
+                Pair.of(projPosHField, options.h)
+        ).forEach(p -> p.getLeft().setText(String.valueOf(p.getRight())));
+    }
 }
